@@ -1,25 +1,19 @@
 package com.everton.mononuclealanticoorps
 
+import android.app.SearchManager
 import android.content.Intent
-import android.database.Cursor
-import android.database.sqlite.SQLiteDatabase.openDatabase
-import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.view.Menu
 import android.view.MenuItem
 import android.view.View
-import android.widget.SearchView
 import android.widget.SimpleCursorAdapter
-import android.widget.Toolbar
+import androidx.appcompat.app.AppCompatActivity
 import kotlinx.android.synthetic.main.activity_main.*
-import kotlinx.android.synthetic.main.activity_main.view.*
-import java.sql.SQLException
+
 
 class MainActivity : AppCompatActivity() {
 
-    lateinit var myDbHelper: DataBaseHelper
-    var databaseOpened = false
-    lateinit var simpleCursorAdapter: SimpleCursorAdapter
+
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -37,35 +31,21 @@ class MainActivity : AppCompatActivity() {
             }
         })
 
-        myDbHelper = DataBaseHelper(this);
-        if(myDbHelper.checkDataBase()) {
-            openDatabase()
-        } else {
-            var task = LoadDatabaseAsync(this@MainActivity)
-            task.execute()
-        }
 
-        val from = Array<String>(40) {"words"}
-        var to = IntArray(40) {R.id.suggestion_text}
-
-        var suggestionAdapter = SimpleCursorAdapter(this@MainActivity, R.layout.suggestion_row, null, from, to, 0) {
-            fun changeCursor(cursor: Cursor) {
-                super.swapCursor(cursor)
-            }
-        }
+        search_view.setSuggestionsAdapter(
+            SimpleCursorAdapter(
+                this@MainActivity,
+                android.R.layout.simple_list_item_1,
+                null,
+                arrayOf(SearchManager.SUGGEST_COLUMN_TEXT_1),
+                intArrayOf(android.R.id.text1)
+            )
+        )
 
 
 
-    }
 
 
-    fun openDatabase() {
-        try {
-            myDbHelper.openDatabase();
-            databaseOpened = true;
-        } catch (e: SQLException) {
-            e.printStackTrace()
-        }
     }
 
 
