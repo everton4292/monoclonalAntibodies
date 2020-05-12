@@ -30,6 +30,8 @@ class MainActivity : AppCompatActivity() {
         search.setOnClickListener(object : View.OnClickListener {
             override fun onClick(v: View?) {
                 search.isIconified = false
+                var intent = Intent(this@MainActivity, MonoclonalDetails::class.java)
+                startActivity(intent)
 
             }
         })
