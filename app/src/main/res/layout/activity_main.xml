@@ -1,4 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
+
+
 <androidx.coordinatorlayout.widget.CoordinatorLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
@@ -16,7 +18,7 @@
             android:background="?attr/colorPrimary"
             app:title="Monoclonal Antibodies"
             app:popupTheme="@style/ThemeOverlay.AppCompat.Light"/>
-        
+
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
@@ -36,6 +38,7 @@
                 android:clickable="true"
                 android:focusable="true"
                 android:iconifiedByDefault="false"
+                android:searchSuggestAuthority="com.example.MyCustomSuggestionProvider"
                 app:defaultQueryHint="Type name of the medicament"/>
 
 
@@ -43,6 +46,7 @@
 
 
     </com.google.android.material.appbar.AppBarLayout>
+
 
 
 </androidx.coordinatorlayout.widget.CoordinatorLayout>

@@ -1,18 +1,21 @@
 package com.everton.mononuclealanticoorps
 
-import android.app.SearchManager
 import android.content.Intent
+import android.database.Cursor
+import android.database.sqlite.SQLiteDatabase.openDatabase
+import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.view.Menu
 import android.view.MenuItem
 import android.view.View
+import android.widget.SearchView
 import android.widget.SimpleCursorAdapter
-import androidx.appcompat.app.AppCompatActivity
+import android.widget.Toolbar
 import kotlinx.android.synthetic.main.activity_main.*
-
+import kotlinx.android.synthetic.main.activity_main.view.*
+import java.sql.SQLException
 
 class MainActivity : AppCompatActivity() {
-
 
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -32,21 +35,9 @@ class MainActivity : AppCompatActivity() {
         })
 
 
-        search_view.setSuggestionsAdapter(
-            SimpleCursorAdapter(
-                this@MainActivity,
-                android.R.layout.simple_list_item_1,
-                null,
-                arrayOf(SearchManager.SUGGEST_COLUMN_TEXT_1),
-                intArrayOf(android.R.id.text1)
-            )
-        )
-
-
-
-
-
     }
+
+
 
 
     override fun onCreateOptionsMenu(menu: Menu?): Boolean {
