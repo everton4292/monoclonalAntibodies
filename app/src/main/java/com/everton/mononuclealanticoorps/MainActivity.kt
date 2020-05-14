@@ -1,29 +1,26 @@
 package com.everton.mononuclealanticoorps
 
+import android.content.Context
 import android.content.Intent
 import android.database.Cursor
 import android.database.sqlite.SQLiteDatabase.openDatabase
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
-import android.view.Menu
-import android.view.MenuItem
-import android.view.View
-import android.widget.SearchView
-import android.widget.SimpleCursorAdapter
-import android.widget.Toolbar
+import android.view.*
+import android.widget.*
 import kotlinx.android.synthetic.main.activity_main.*
 import kotlinx.android.synthetic.main.activity_main.view.*
 import java.sql.SQLException
 
 class MainActivity : AppCompatActivity() {
 
-    lateinit var myDbHelper: DataBaseHelper
-    var databaseOpened = false
-    lateinit var simpleCursorAdapter: SimpleCursorAdapter
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
+
+        val listView = findViewById<ListView>(R.id.main_ListView)
+        listView.adapter = MyCustomAdapter(this)
 
         var search = search_view
 
@@ -33,39 +30,54 @@ class MainActivity : AppCompatActivity() {
         search.setOnClickListener(object : View.OnClickListener {
             override fun onClick(v: View?) {
                 search.isIconified = false
+                var intent = Intent(this@MainActivity, MonoclonalDetails::class.java)
+                startActivity(intent)
 
             }
         })
 
-        myDbHelper = DataBaseHelper(this);
-        if(myDbHelper.checkDataBase()) {
-            openDatabase()
-        } else {
-            var task = LoadDatabaseAsync(this@MainActivity)
-            task.execute()
-        }
-
-        val from = Array<String>(40) {"words"}
-        var to = IntArray(40) {R.id.suggestion_text}
-
-        var suggestionAdapter = SimpleCursorAdapter(this@MainActivity, R.layout.suggestion_row, null, from, to, 0) {
-            fun changeCursor(cursor: Cursor) {
-                super.swapCursor(cursor)
-            }
-        }
-
-
 
     }
 
+    private class MyCustomAdapter(context: Context) : BaseAdapter() {
 
-    fun openDatabase() {
-        try {
-            myDbHelper.openDatabase();
-            databaseOpened = true;
-        } catch (e: SQLException) {
-            e.printStackTrace()
+        private val mContext: Context
+
+        private val names = arrayListOf<String>(
+            "Dipirona", "Valium", "opioide", "dorflex"
+        )
+        init {
+            mContext = context
         }
+
+        override fun getView(position: Int, convertView: View?, ViewGroup: ViewGroup?): View {
+            val layoutInflater = LayoutInflater.from(mContext)
+            val rowMain = layoutInflater.inflate(R.layout.main_row, ViewGroup, false)
+
+            val nameTextView = rowMain.findViewById<TextView>(R.id.monoclonal_TextView)
+            nameTextView.text = names.get(position)
+
+            return rowMain
+
+
+        }
+
+        override fun getItem(position: Int): Any {
+            return "TEXT STRING"
+
+        }
+
+        override fun getItemId(position: Int): Long {
+            return position.toLong()
+
+        }
+
+        override fun getCount(): Int {
+            return names.size
+
+
+        }
+
     }
 
 

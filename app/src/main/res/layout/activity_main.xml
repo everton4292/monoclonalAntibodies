@@ -1,42 +1,47 @@
 <?xml version="1.0" encoding="utf-8"?>
-<androidx.coordinatorlayout.widget.CoordinatorLayout xmlns:android="http://schemas.android.com/apk/res/android"
+
+
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     xmlns:app="http://schemas.android.com/apk/res-auto">
 
     <com.google.android.material.appbar.AppBarLayout
+        android:id="@+id/appBarLayout"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:theme="@style/ThemeOverlay.AppCompat.Dark.ActionBar">
+        android:theme="@style/ThemeOverlay.AppCompat.Dark.ActionBar"
+        app:layout_constraintTop_toTopOf="parent">
 
         <androidx.appcompat.widget.Toolbar
             android:id="@+id/toolbar"
             android:layout_width="match_parent"
             android:layout_height="?attr/actionBarSize"
             android:background="?attr/colorPrimary"
-            app:title="Monoclonal Antibodies"
-            app:popupTheme="@style/ThemeOverlay.AppCompat.Light"/>
-        
+            app:popupTheme="@style/ThemeOverlay.AppCompat.Light"
+            app:title="Monoclonal Antibodies" />
+
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:orientation="horizontal"
-            android:background="@color/colorPrimary">
+            android:background="@color/colorPrimary"
+            android:orientation="horizontal">
 
             <android.widget.SearchView
                 android:id="@+id/search_view"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_marginTop="10dp"
                 android:layout_marginLeft="15dp"
+                android:layout_marginTop="10dp"
                 android:layout_marginRight="15dp"
                 android:layout_marginBottom="15dp"
                 android:background="@color/white"
-                android:theme="@style/SearchTextViewTheme"
                 android:clickable="true"
                 android:focusable="true"
                 android:iconifiedByDefault="false"
-                app:defaultQueryHint="Type name of the medicament"/>
+                android:searchSuggestAuthority="com.example.MyCustomSuggestionProvider"
+                android:theme="@style/SearchTextViewTheme"
+                app:defaultQueryHint="Type name of the medicament" />
 
 
         </LinearLayout>
@@ -44,5 +49,13 @@
 
     </com.google.android.material.appbar.AppBarLayout>
 
+    <ListView
+        android:id="@+id/main_ListView"
+        android:layout_width="382dp"
+        android:layout_height="573dp"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/appBarLayout" />
 
-</androidx.coordinatorlayout.widget.CoordinatorLayout>
+
+</androidx.constraintlayout.widget.ConstraintLayout>
