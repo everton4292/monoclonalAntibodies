@@ -8,8 +8,11 @@ import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.view.*
 import android.widget.*
+import com.google.gson.GsonBuilder
 import kotlinx.android.synthetic.main.activity_main.*
 import kotlinx.android.synthetic.main.activity_main.view.*
+import okhttp3.*
+import java.io.IOException
 import java.sql.SQLException
 
 class MainActivity : AppCompatActivity() {
@@ -35,9 +38,32 @@ class MainActivity : AppCompatActivity() {
 
             }
         })
-
+        fetchJson()
 
     }
+
+    fun fetchJson() {
+        val url = "http://192.168.15.12:3333/monoclonal"
+
+        val request = Request.Builder().url(url).build()
+
+        val client = OkHttpClient()
+        client.newCall(request).enqueue( object: Callback {
+            override fun onResponse(call: Call, response: Response) {
+                val body = response.body?.string()
+                println("//success pipou//")
+                println(body)
+
+                val gson = GsonBuilder().create()
+                val homeFeed = gson.fromJson(body, HomeFeed::class.java)
+            }
+
+            override fun onFailure(call: Call, e: IOException) {
+                println("//failed pipou//")
+            }
+        })
+    }
+
 
     private class MyCustomAdapter(context: Context) : BaseAdapter() {
 
@@ -105,3 +131,8 @@ class MainActivity : AppCompatActivity() {
         return super.onOptionsItemSelected(item)
     }
 }
+
+class HomeFeed(val monoclonals: List<Monoclonals>)
+
+class Monoclonals(val monoclonalId: Int, val name: String)
+
