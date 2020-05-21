@@ -6,7 +6,7 @@ import android.view.ViewGroup
 import androidx.recyclerview.widget.RecyclerView
 import kotlinx.android.synthetic.main.main_row.view.*
 
-class MainAdapter(val homeFeed: HomeFeed) : RecyclerView.Adapter<CustomViewHolder>() {
+class MainAdapter(val monoclonal : Array<Monoclonal>) : RecyclerView.Adapter<CustomViewHolder>() {
 
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): CustomViewHolder {
@@ -16,14 +16,14 @@ class MainAdapter(val homeFeed: HomeFeed) : RecyclerView.Adapter<CustomViewHolde
     }
 
     override fun getItemCount(): Int {
-        return homeFeed.monoclonals.count()
+        return monoclonal.size
     }
 
 
     override fun onBindViewHolder(holder: CustomViewHolder, position: Int) {
 
-        val monoclonalNames = homeFeed.monoclonals.get(position)
-        holder.view.monoclonal_TextView.text = monoclonalNames.name
+        val monoclonal = monoclonal[position]
+        holder?.view?.monoclonal_TextView?.text = monoclonal.name
     }
 
 }

@@ -8,22 +8,18 @@ import android.view.View
 import androidx.appcompat.app.AppCompatActivity
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.google.gson.GsonBuilder
-import com.google.gson.reflect.TypeToken
 import kotlinx.android.synthetic.main.activity_main.*
 import okhttp3.*
 import java.io.IOException
-import java.lang.reflect.Type
 
 
 class MainActivity : AppCompatActivity() {
-
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
 
         main_RecyclerView.layoutManager = LinearLayoutManager(this)
-
 
 
         val search = search_view
@@ -39,8 +35,8 @@ class MainActivity : AppCompatActivity() {
 
             }
         })
-        fetchJson()
 
+        fetchJson()
     }
 
     fun fetchJson() {
@@ -57,12 +53,11 @@ class MainActivity : AppCompatActivity() {
 
                 val gson = GsonBuilder().create()
 
-
-
-                val homeFeed = gson.fromJson(body, HomeFeed::class.java)
+                val monoclonal: Array<Monoclonal> =
+                    gson.fromJson(body, Array<Monoclonal>::class.java)
 
                 runOnUiThread {
-                    main_RecyclerView.adapter = MainAdapter(homeFeed)
+                    main_RecyclerView.adapter = MainAdapter(monoclonal)
                 }
             }
 
@@ -98,21 +93,22 @@ class MainActivity : AppCompatActivity() {
     }
 }
 
-class HomeFeed(val monoclonals: List<Monoclonals>)
 
-class Monoclonals(
-    val monoclonalId: Int,
-    val name: String,
-    val target: String,
-    val concentration: String,
-    val dose: String,
-    val cycles: String,
-    val risk: String,
-    val infusionTime: String,
-    val premedication: String,
-    val filter: String,
-    val photosensibility: String,
-    val other: String
+class Monoclonal(
+    val _id: String? = "",
+    val monoclonalId: String? = "",
+    val name: String? = "",
+    val target: String? = "",
+    val concentration: String? = "",
+    val dose: String? = "",
+    val cycles: String? = "",
+    val risk: String? = "",
+    val infusionTime: String? = "",
+    val premedication: String? = "",
+    val filter: String? = "",
+    val photosensibility: String? = "",
+    val other: String? = ""
+
 )
 
 
