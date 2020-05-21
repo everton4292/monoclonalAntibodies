@@ -26,6 +26,10 @@ class MainAdapter(val monoclonal : Array<Monoclonal>) : RecyclerView.Adapter<Cus
         holder?.view?.monoclonal_TextView?.text = monoclonal.name
     }
 
+
+
+
+
 }
 
 class CustomViewHolder(val view: View) : RecyclerView.ViewHolder(view) {
