@@ -1,5 +1,6 @@
 package com.everton.mononuclealanticoorps
 
+import android.content.Intent
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -34,4 +35,10 @@ class MainAdapter(val monoclonal : Array<Monoclonal>) : RecyclerView.Adapter<Cus
 
 class CustomViewHolder(val view: View) : RecyclerView.ViewHolder(view) {
 
+    init {
+        view.setOnClickListener {
+            val intent = Intent(view.context, MonoclonalDetails::class.java)
+            view.context.startActivity(intent)
+        }
+    }
 }
