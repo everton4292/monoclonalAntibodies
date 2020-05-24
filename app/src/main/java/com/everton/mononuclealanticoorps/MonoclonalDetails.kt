@@ -17,28 +17,30 @@ import com.everton.mononuclealanticoorps.fragments.FragmentOtherInfos
 import com.everton.mononuclealanticoorps.fragments.FragmentPreMedication
 import com.google.android.material.tabs.TabLayout
 import com.google.android.material.tabs.TabLayout.OnTabSelectedListener
+import kotlinx.android.synthetic.main.activity_main.*
+import kotlinx.android.synthetic.main.activity_monoclonal_details.*
 import java.util.*
 
 class MonoclonalDetails : AppCompatActivity() {
-    private var viewPager: ViewPager? = null
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_monoclonal_details)
-        val toolbar: Toolbar
-        toolbar =
-            findViewById<View>(R.id.mToolBar) as Toolbar
-        setSupportActionBar(toolbar)
-        supportActionBar!!.title = "Monoclonal Antibodies Names"
-        toolbar.setNavigationIcon(android.R.drawable.ic_media_previous)
-        viewPager = findViewById<View>(R.id.tab_viewPager) as ViewPager
-        if (viewPager != null) {
-            setupViewPager(viewPager!!)
-        }
+
+
+        setSupportActionBar(mToolBar)
+        supportActionBar?.title = intent.getStringExtra(CustomViewHolder.MONOCLONAL_TITLE_KEY)
+        supportActionBar?.setHomeButtonEnabled(true)
+        supportActionBar?.setDisplayHomeAsUpEnabled(true)
+
+
+        setupViewPager(tab_viewPager)
+
         val tabLayout = findViewById<View>(R.id.tabLayout) as TabLayout
-        tabLayout.setupWithViewPager(viewPager)
+        tabLayout.setupWithViewPager(tab_viewPager)
         tabLayout.addOnTabSelectedListener(object : OnTabSelectedListener {
             override fun onTabSelected(tab: TabLayout.Tab) {
-                viewPager!!.currentItem = tab.position
+                tab_viewPager.currentItem = tab.position
             }
 
             override fun onTabUnselected(tab: TabLayout.Tab) {}

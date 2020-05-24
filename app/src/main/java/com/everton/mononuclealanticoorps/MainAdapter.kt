@@ -25,20 +25,28 @@ class MainAdapter(val monoclonal : Array<Monoclonal>) : RecyclerView.Adapter<Cus
 
         val monoclonal = monoclonal[position]
         holder?.view?.monoclonal_TextView?.text = monoclonal.name
+
+        holder?.monoclonal = monoclonal
     }
-
-
-
 
 
 }
 
-class CustomViewHolder(val view: View) : RecyclerView.ViewHolder(view) {
+class CustomViewHolder(val view: View, var monoclonal: Monoclonal? = null) : RecyclerView.ViewHolder(view) {
+
+    companion object {
+        val MONOCLONAL_TITLE_KEY = "TITLE"
+    }
 
     init {
         view.setOnClickListener {
             val intent = Intent(view.context, MonoclonalDetails::class.java)
+
+            intent.putExtra(MONOCLONAL_TITLE_KEY, monoclonal?.name)
+
             view.context.startActivity(intent)
+            
+
         }
     }
 }
