@@ -14,8 +14,8 @@ import kotlin.collections.ArrayList
 class MainAdapter(val monoclonal: ArrayList<Monoclonal>) :
     RecyclerView.Adapter<MainAdapter.CustomViewHolder>(),
     Filterable {
-    var monoclonalFilterList = monoclonal
-
+    var monoclonalFilterList = ArrayList<Monoclonal>()
+    var originalList = monoclonal
     init {
         monoclonalFilterList = monoclonal
     }
@@ -34,27 +34,27 @@ class MainAdapter(val monoclonal: ArrayList<Monoclonal>) :
     override fun onBindViewHolder(holder: CustomViewHolder, position: Int) {
 
         val monoclonal = monoclonalFilterList[position]
-        holder?.view?.monoclonal_TextView?.text = monoclonal.name
+        holder.itemView.monoclonal_TextView?.text = monoclonal.name
 
-        holder?.monoclonal = monoclonal
+        //holder?.monoclonal = monoclonal
     }
 
     override fun getFilter(): Filter {
         return object : Filter() {
             override fun performFiltering(constraint: CharSequence?): FilterResults {
                 val charSearch = constraint.toString()
-                if (charSearch.isEmpty()) {
+                if (constraint?.length == 0) {
                     monoclonalFilterList = monoclonal
                 } else {
-                    val resultList = ArrayList<Monoclonal>()
+                    monoclonalFilterList = getFilteredResults(constraint.toString().toLowerCase(Locale.ROOT))
+                    /*val resultList = ArrayList<Monoclonal>()
                     for (row in monoclonal) {
-                        if (row.toString().toLowerCase(Locale.ROOT)
-                                .contains(charSearch.toLowerCase(Locale.ROOT))
+                        if (row.toString().toLowerCase(Locale.ROOT).contains(charSearch.toLowerCase(Locale.ROOT))
                         ) {
                             resultList.add(row)
                         }
                     }
-                    monoclonalFilterList = resultList
+                    monoclonalFilterList = resultList*/
                 }
                 val filterResults = FilterResults()
                 filterResults.values = monoclonalFilterList
@@ -66,6 +66,17 @@ class MainAdapter(val monoclonal: ArrayList<Monoclonal>) :
             override fun publishResults(constraint: CharSequence?, results: FilterResults?) {
                 monoclonalFilterList = results?.values as ArrayList<Monoclonal>
                 notifyDataSetChanged()
+            }
+
+            protected fun getFilteredResults(constraint: String?): ArrayList<Monoclonal> {
+                val results: ArrayList<Monoclonal> = ArrayList()
+                val charSrch = constraint.toString()
+                for (item in originalList) {
+                    if (item.name?.toLowerCase()!!.contains(charSrch)) {
+                        results.add(item)
+                    }
+                }
+                return results
             }
         }
 
