@@ -5,21 +5,30 @@ import android.os.Bundle
 import android.view.Menu
 import android.view.MenuItem
 import android.view.View
+import android.widget.SearchView
 import androidx.appcompat.app.AppCompatActivity
 import androidx.recyclerview.widget.LinearLayoutManager
+import androidx.recyclerview.widget.RecyclerView
 import com.google.gson.GsonBuilder
+import com.google.gson.reflect.TypeToken
 import kotlinx.android.synthetic.main.activity_main.*
 import okhttp3.*
 import java.io.IOException
+import java.util.*
+import kotlin.collections.ArrayList
 
 
 class MainActivity : AppCompatActivity() {
+    lateinit var adapter: MainAdapter
+    lateinit var rv: RecyclerView
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
 
-        main_RecyclerView.layoutManager = LinearLayoutManager(this)
+        rv = findViewById(R.id.main_RecyclerView)
+        rv.layoutManager = LinearLayoutManager(rv.context)
+        rv.setHasFixedSize(true)
 
 
         val search = search_view
@@ -36,8 +45,24 @@ class MainActivity : AppCompatActivity() {
             }
         })
 
+        search_view.setOnQueryTextListener(object: SearchView.OnQueryTextListener{
+            override fun onQueryTextSubmit(query: String?): Boolean {
+                return false
+            }
+
+            override fun onQueryTextChange(newText: String?): Boolean {
+
+                adapter.filter.filter(newText)
+                return false
+            }
+
+        })
+
         fetchJson()
     }
+
+
+
 
     fun fetchJson() {
         val url = "http://192.168.15.12:3333/monoclonal"
@@ -53,11 +78,16 @@ class MainActivity : AppCompatActivity() {
 
                 val gson = GsonBuilder().create()
 
-                val monoclonal: Array<Monoclonal> =
-                    gson.fromJson(body, Array<Monoclonal>::class.java)
+                var type = object : TypeToken<ArrayList<Monoclonal>>() {}.type
+                val monoclonal = gson.fromJson<ArrayList<Monoclonal>>(body, type)
+                //val monoclonal: List<Any> = Arrays.asList(GsonBuilder().create().fromJson(body, Array<Any>::class.java)
+                //)
 
                 runOnUiThread {
                     main_RecyclerView.adapter = MainAdapter(monoclonal)
+                    adapter = MainAdapter(monoclonal)
+                    rv.adapter = adapter
+
                 }
             }
 
@@ -83,6 +113,7 @@ class MainActivity : AppCompatActivity() {
         }
 
         if (id == R.id.action_exit) {
+
             System.exit(0)
             return true
         }
@@ -91,6 +122,8 @@ class MainActivity : AppCompatActivity() {
 
         return super.onOptionsItemSelected(item)
     }
+
+
 }
 
 

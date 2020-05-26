@@ -4,11 +4,21 @@ import android.content.Intent
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.Filter
+import android.widget.Filterable
 import androidx.recyclerview.widget.RecyclerView
 import kotlinx.android.synthetic.main.main_row.view.*
+import java.util.*
+import kotlin.collections.ArrayList
 
-class MainAdapter(val monoclonal : Array<Monoclonal>) : RecyclerView.Adapter<CustomViewHolder>() {
+class MainAdapter(val monoclonal: ArrayList<Monoclonal>) :
+    RecyclerView.Adapter<MainAdapter.CustomViewHolder>(),
+    Filterable {
+    var monoclonalFilterList = monoclonal
 
+    init {
+        monoclonalFilterList = monoclonal
+    }
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): CustomViewHolder {
         val layoutInflater = LayoutInflater.from(parent.context)
@@ -17,36 +27,70 @@ class MainAdapter(val monoclonal : Array<Monoclonal>) : RecyclerView.Adapter<Cus
     }
 
     override fun getItemCount(): Int {
-        return monoclonal.size
+        return monoclonalFilterList.size
     }
 
 
     override fun onBindViewHolder(holder: CustomViewHolder, position: Int) {
 
-        val monoclonal = monoclonal[position]
+        val monoclonal = monoclonalFilterList[position]
         holder?.view?.monoclonal_TextView?.text = monoclonal.name
 
         holder?.monoclonal = monoclonal
     }
 
+    override fun getFilter(): Filter {
+        return object : Filter() {
+            override fun performFiltering(constraint: CharSequence?): FilterResults {
+                val charSearch = constraint.toString()
+                if (charSearch.isEmpty()) {
+                    monoclonalFilterList = monoclonal
+                } else {
+                    val resultList = ArrayList<Monoclonal>()
+                    for (row in monoclonal) {
+                        if (row.toString().toLowerCase(Locale.ROOT)
+                                .contains(charSearch.toLowerCase(Locale.ROOT))
+                        ) {
+                            resultList.add(row)
+                        }
+                    }
+                    monoclonalFilterList = resultList
+                }
+                val filterResults = FilterResults()
+                filterResults.values = monoclonalFilterList
+                return filterResults
+            }
 
-}
 
-class CustomViewHolder(val view: View, var monoclonal: Monoclonal? = null) : RecyclerView.ViewHolder(view) {
+            @Suppress("UNCHEKED_CAST")
+            override fun publishResults(constraint: CharSequence?, results: FilterResults?) {
+                monoclonalFilterList = results?.values as ArrayList<Monoclonal>
+                notifyDataSetChanged()
+            }
+        }
 
-    companion object {
-        val MONOCLONAL_TITLE_KEY = "TITLE"
+
     }
 
-    init {
-        view.setOnClickListener {
-            val intent = Intent(view.context, MonoclonalDetails::class.java)
 
-            intent.putExtra(MONOCLONAL_TITLE_KEY, monoclonal?.name)
+    class CustomViewHolder(val view: View, var monoclonal: Monoclonal? = null) :
+        RecyclerView.ViewHolder(view) {
 
-            view.context.startActivity(intent)
-            
+        companion object {
+            val MONOCLONAL_TITLE_KEY = "TITLE"
+        }
 
+        init {
+            view.setOnClickListener {
+                val intent = Intent(view.context, MonoclonalDetails::class.java)
+
+                intent.putExtra(MONOCLONAL_TITLE_KEY, monoclonal?.name)
+
+                view.context.startActivity(intent)
+
+
+            }
         }
     }
 }
+

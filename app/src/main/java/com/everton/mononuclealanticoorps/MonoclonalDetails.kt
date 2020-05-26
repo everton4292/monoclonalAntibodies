@@ -29,7 +29,7 @@ class MonoclonalDetails : AppCompatActivity() {
 
 
         setSupportActionBar(mToolBar)
-        supportActionBar?.title = intent.getStringExtra(CustomViewHolder.MONOCLONAL_TITLE_KEY)
+        supportActionBar?.title = intent.getStringExtra(MainAdapter.CustomViewHolder.MONOCLONAL_TITLE_KEY)
         supportActionBar?.setHomeButtonEnabled(true)
         supportActionBar?.setDisplayHomeAsUpEnabled(true)
 
