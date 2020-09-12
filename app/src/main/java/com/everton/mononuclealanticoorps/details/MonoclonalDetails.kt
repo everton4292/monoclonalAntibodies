@@ -1,23 +1,21 @@
-package com.everton.mononuclealanticoorps
+package com.everton.mononuclealanticoorps.details
 
 import android.os.Bundle
 import android.view.MenuItem
 import android.view.View
-import android.view.ViewGroup
 import androidx.appcompat.app.AppCompatActivity
-import androidx.appcompat.widget.Toolbar
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.FragmentManager
 import androidx.fragment.app.FragmentPagerAdapter
-import androidx.recyclerview.widget.RecyclerView
 import androidx.viewpager.widget.ViewPager
+import com.everton.mononuclealanticoorps.list.MonoclonalListAdapter
+import com.everton.mononuclealanticoorps.R
 import com.everton.mononuclealanticoorps.fragments.FragmentDefinition
 import com.everton.mononuclealanticoorps.fragments.FragmentInformationsOfUse
 import com.everton.mononuclealanticoorps.fragments.FragmentOtherInfos
 import com.everton.mononuclealanticoorps.fragments.FragmentPreMedication
 import com.google.android.material.tabs.TabLayout
 import com.google.android.material.tabs.TabLayout.OnTabSelectedListener
-import kotlinx.android.synthetic.main.activity_main.*
 import kotlinx.android.synthetic.main.activity_monoclonal_details.*
 import java.util.*
 
@@ -29,9 +27,7 @@ class MonoclonalDetails : AppCompatActivity() {
 
 
         setSupportActionBar(mToolBar)
-        supportActionBar?.title = intent.getStringExtra(MainAdapter.CustomViewHolder.MONOCLONAL_TITLE_KEY)
-        supportActionBar?.setHomeButtonEnabled(true)
-        supportActionBar?.setDisplayHomeAsUpEnabled(true)
+
 
 
         setupViewPager(tab_viewPager)
